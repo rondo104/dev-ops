@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  become: yes
+
+  vars:
+    packages:
+      - apache2
+      - mysql-server
+      - mysql-common
+      - mysql-client
+      - libapache2-mod-wsgi-py3
+    services:
+      - apache2
+
+  roles:
+    - lamp

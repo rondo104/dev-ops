@@ -1,0 +1,31 @@
+---
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ packages }}"
+  become: true
+
+- name: Confirm services are running
+  service:
+    name: "{{ item }}"
+    state: running
+  with_items: "{{ services }}"
+  become: true
+
+- name: Enable Apache2 modssl
+  shell: a2enmod ssl
+  become: true
+
+- name: Enable Apache2 Default HTTPS site
+  shell: a2ensite default-ssl
+  notify: Restart Apache
+  become: true
+
+# Handler to restart Apache
+#handlers:
+#  - name: Restart Apache
+#    service:
+#      name: apache2
+#      state: restarted
+#    become: true

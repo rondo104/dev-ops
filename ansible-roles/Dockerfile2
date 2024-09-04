@@ -1,0 +1,22 @@
+# Use the official Python slim image
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Install dependencies: Ansible and Apache
+RUN apt-get update && \
+    apt-get install -y ansible&& \
+    apt-get clean
+
+# Copy your Ansible playbook and inventory file into the container
+COPY lamp /app/lamp
+COPY webapplication /app/webapplication
+COPY app1.yml /app/app.yml
+COPY inventory.ini /app/inventory.ini
+
+# Run the Ansible playbook
+RUN ansible-playbook -i /app/inventory.ini /app/app.yml -vvv
+
+# Set the entrypoint to run Apache in the foreground
+ENTRYPOINT ["apachectl", "-D", "FOREGROUND"]

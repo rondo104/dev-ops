@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Ensure Apache is installed
+      apt:
+        name: apache2
+        state: present
+
+    - name: Start Apache service (in Docker-compatible way)
+      command: apachectl start
+
+    - name: Check Apache status
+      command: apachectl status

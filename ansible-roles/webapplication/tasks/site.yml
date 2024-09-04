@@ -1,0 +1,9 @@
+- apt:
+    name: libapache2-mod-wsgi
+    state: present
+
+- name: Copy the Apache configuration file
+  template:
+    src: "apache.conf"
+    dest: /etc/apache2/sites-available/000-default.conf
+  notify: "Restart Apache"
