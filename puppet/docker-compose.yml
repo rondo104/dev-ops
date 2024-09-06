@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  puppetserver:
+    image: puppet-server:latest  # Image built from the Puppet Server Dockerfile
+    container_name: puppetserver
+    hostname: puppetserver
+    build: server
+    ports:
+      - "8140:8140"
+    environment:
+      - PUPPET_SERVER_HOSTNAME=puppetserver
+    volumes:
+      - ./puppetserver/data:/etc/puppetlabs
+    networks:
+      - puppet
+
+  puppetagent:
+    image: puppet-agent:latest  # Image built from the Puppet Agent Dockerfile
+    container_name: puppetagent
+    hostname: puppetagent
+    build: aggent
+    environment:
+      - PUPPETSERVER=puppetserver
+    depends_on:
+      - puppetserver
+    volumes:
+      - ./puppetagent/data:/etc/puppetlabs
+    networks:
+      - puppet
+
+networks:
+  puppet:
+    driver: bridge

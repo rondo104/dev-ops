@@ -14,7 +14,7 @@ COPY lamp.yml /app/lamp.yml
 COPY inventory.ini /app/inventory.ini
 
 # Run the Ansible playbook
-RUN ansible-playbook -i /app/inventory.ini /app/app1.yml
+RUN ansible-playbook -i /app/inventory.ini /app/lamp.yml
 
 # Set the entrypoint to run Apache in the foreground
 ENTRYPOINT ["apachectl", "-D", "FOREGROUND"]

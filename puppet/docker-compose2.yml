@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  puppet:
+    image: puppet/puppetserver
+    container_name: puppet
+    working_dir: /server
+    hostname: puppet
+    volumes:
+      - /manifests:/etc/puppetlabs/code/environments/production/manifests
+      - /logs:/var/log/puppetlabs/puppetserver
+      - /code:/etc/puppetlabs/code/
+    ports:
+      - "8140:8140"
+
+  puppet_agent:
+    image: puppet/puppet-agent-ubuntu
+    container_name: puppet_agent
+    depends_on:
+      - puppet
+    links:
+      - puppet:puppet
+
